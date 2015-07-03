@@ -22,16 +22,13 @@ function props(value) {
     }
 })
 class Hello extends backbone.View {
-    initialize() {
-        this.person = new Person({
-            firstName: 'George',
-            lastName: 'Washington'
-        });
-    }
     render() {
-        this.$el.html('Hello, ' + this.person.getFullName() + '.');
+        this.$el.html('Hello, ' + this.model.getFullName() + '.');
     }
 }
 
-var myView = new Hello({el: document.getElementById('root')});
+var myView = new Hello({el: document.getElementById('root'), model: new Person({
+    firstName: 'George',
+    lastName: 'Washington'
+})});
 myView.render();
