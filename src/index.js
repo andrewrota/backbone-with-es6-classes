@@ -1,5 +1,6 @@
 'use strict';
 import backbone from 'backbone';
+import { on } from './decorators.js';
 import _ from 'underscore';
 
 class Person extends backbone.Model {
@@ -7,23 +8,14 @@ class Person extends backbone.Model {
         return this.get('firstName') + ' ' + this.get('lastName');
     }
 }
-// Using benmccormick's suggestion
-// for decorators to apply properties to class
-// before instantiation
-// https://github.com/jashkenas/backbone/issues/3560#issuecomment-113709224
-function props(value) {
-    return function decorator(target) {
-        _.extend(target.prototype, value);
-    }
-}
-@props({
-    events: {
-        'click': function() { console.log('clicked!'); }
-    }
-})
+
 class Hello extends backbone.View {
     render() {
         this.$el.html('Hello, ' + this.model.getFullName() + '.');
+    }
+    @on('click')
+    handleClick() {
+        console.log('clicked');
     }
 }
 
@@ -31,4 +23,5 @@ var myView = new Hello({el: document.getElementById('root'), model: new Person({
     firstName: 'George',
     lastName: 'Washington'
 })});
+window.myView = myView;
 myView.render();
